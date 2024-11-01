@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import random
 from typing import List, Tuple
 from mp_parsing_algorithms import UserRatingsDatabase, MovieRatingsDatabase, ParseDatabase

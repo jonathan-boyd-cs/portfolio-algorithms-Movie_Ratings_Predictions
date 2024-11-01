@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 from mp_visualization_algorithms import create_whisker_plot
 from mp_testing_suite import precision_testing
 
