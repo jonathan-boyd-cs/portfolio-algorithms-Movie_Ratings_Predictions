@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 from mp_parsing_algorithms import ParseDatabase, RatingsDatabase, UserRatingsDatabase
 from mp_parsing_algorithms import generate_user_set, generate_movie_set, generate_ratings_set
 from mp_parsing_algorithms import generate_genre_set, generate_ratings_database

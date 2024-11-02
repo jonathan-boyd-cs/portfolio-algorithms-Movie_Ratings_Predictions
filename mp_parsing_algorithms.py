@@ -43,7 +43,7 @@ def generate_dataset( file_handle : TextIOWrapper , parser : Callable[[str], any
         presently formatted in the default implementaton.<br>
         
         Returns:<br>
-        - <code>List</code>: list of information
+        - <code>List</code>: list of user information
     """
     #the function returns a database with a dictionary containing parsed data objects
     database =  ParseDatabase()
@@ -213,13 +213,17 @@ class RatingData:
 
 @dataclass (kw_only=True, frozen=False)
 class UserRatings:
-    user_id   : int
-    ratings   : dict  = field(default_factory=dict, init=False)
+    user_id       : int
+    score         : int = 0# total value of all ratings summed
+    ratings_count : int = 0# number of ratings
+    ratings       : dict  = field(default_factory=dict, init=False)
     
 @dataclass (kw_only=True, frozen=False)
 class MovieRatings:
-    movie_id   : int
-    ratings    : dict  = field(default_factory=dict)    
+    movie_id      : int
+    score         : int  = 0# total value of all ratings summed
+    ratings_count : int  = 0# number of ratings
+    ratings       : dict  = field(default_factory=dict)    
 
 
 class UserRatingsDatabase:
@@ -329,8 +333,12 @@ def generate_ratings_database(user_count : int, movie_count : int, ratings_data 
         rating    =  ratings_data.get_data()[i].rating
         #---ratings-per-user-update-------------------------------------------------------------------------
         ratings_database.ratings_per_user.user_ratings[ user_id ].ratings[  movie_id  ]  = rating
+        ratings_database.ratings_per_user.user_ratings[ user_id ].score += rating
+        ratings_database.ratings_per_user.user_ratings[ user_id ].ratings_count += 1
         #---ratings-per-movie-update-------------------------------------------------------------------------
         ratings_database.ratings_per_movie.movie_ratings[ movie_id ].ratings[  user_id  ] = rating
+        ratings_database.ratings_per_movie.movie_ratings[ movie_id ].score += rating
+        ratings_database.ratings_per_movie.movie_ratings[ movie_id ].ratings_count += 1
         #--------------------------------------------------------------------------------
     return ratings_database
 

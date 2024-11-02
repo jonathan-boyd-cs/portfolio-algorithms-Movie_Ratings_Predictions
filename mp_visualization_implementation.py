@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from mp_parsing_algorithms import ParseDatabase, UserRatingsDatabase
 from mp_visualization_algorithms import genre_ratings_ratios_by_gender_asLists, create_bar_plot
 from matplotlib.backends.backend_pdf import PdfPages

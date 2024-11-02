@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import random
 from typing import List, Tuple
 from mp_parsing_algorithms import UserRatingsDatabase, MovieRatingsDatabase, ParseDatabase
@@ -26,9 +25,9 @@ def mean_user_rating_based_prediction(user_id : int , ratings_per_user : UserRat
         - <code>float</code>: the average rating the user has provided
     """
     try:
-        user_ratings = ratings_per_user.user_ratings[user_id].ratings.values()
-        summation_of_ratings = sum(user_ratings)
-        total_number_ratings = len(user_ratings)
+        user_ratings = ratings_per_user.user_ratings[user_id]
+        summation_of_ratings = user_ratings.score
+        total_number_ratings = user_ratings.ratings_count
         return division_calculation( summation_of_ratings , total_number_ratings ) 
     except:
         # no ratings to observe or unknown error
@@ -46,9 +45,9 @@ def mean_movie_rating_based_prediction( movie_id : int ,ratings_per_movie : Movi
         - <code>float</code>: the average rating the user has provided
     """
     try:
-        movie_ratings = ratings_per_movie.movie_ratings[movie_id].ratings.values()
-        summation_of_ratings = sum(movie_ratings)
-        total_number_ratings = len(movie_ratings)
+        movie_ratings = ratings_per_movie.movie_ratings[movie_id]
+        summation_of_ratings = movie_ratings.score
+        total_number_ratings = movie_ratings.ratings_count
         return division_calculation( summation_of_ratings , total_number_ratings )
     except:
         # no ratings to observe or unknown error
@@ -166,10 +165,10 @@ def pearson_correlation_coeff_similarity_prediction( user_id : int , alt_user_id
     """
     _ratings_per_user = ratings_per_user.user_ratings
     try:
-        X = _ratings_per_user[user_id].ratings.values()
-        Y = _ratings_per_user[alt_user_id].ratings.values()
-        X_user_Mean_Rating      = float( sum(X)  / len(X) )
-        Y_alt_user_Mean_Rating  = float( sum(Y) /  len(Y) )
+        X = _ratings_per_user[user_id]
+        Y = _ratings_per_user[alt_user_id]
+        X_user_Mean_Rating      = float( X.score  / X.ratings_count )
+        Y_alt_user_Mean_Rating  = float( Y.score /  Y.ratings_count )
     except:
         # arithmetic error or unknown
         return 0.0
@@ -284,7 +283,7 @@ def hybrid_based_prediction(user_id : int , movie_id : int , ratings_per_user : 
     _ratings_per_user = ratings_per_user.user_ratings
     
     #average rating user_id has given
-    user_mean_rating = division_calculation( sum(_ratings_per_user[user_id].ratings.values())   , len(_ratings_per_user[user_id].ratings.values()))
+    user_mean_rating = division_calculation( _ratings_per_user[user_id].score   , _ratings_per_user[user_id].ratings_count)
     if not user_mean_rating:
         # div by zero
         return None
@@ -298,7 +297,7 @@ def hybrid_based_prediction(user_id : int , movie_id : int , ratings_per_user : 
         if movie_id in _ratings_per_user[alt_user].ratings:
             # prediction calculations
             alt_user_rating      = _ratings_per_user[alt_user].ratings[movie_id]
-            alt_user_mean_rating = division_calculation(  sum(_ratings_per_user[alt_user].ratings.values()) , len(_ratings_per_user[alt_user].ratings.values())  )
+            alt_user_mean_rating = division_calculation(  _ratings_per_user[alt_user].score , _ratings_per_user[alt_user].ratings_count  )
             residual             = float(alt_user_rating - alt_user_mean_rating)
             numerator_summation   += float( residual * similarity  )
             denominator_summation +=  abs(similarity)

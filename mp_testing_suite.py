@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from mp_prediction_algorithms import kNearestNeighbors, random_prediction, mean_user_rating_based_prediction
 from mp_prediction_algorithms import mean_movie_rating_based_prediction, demographic_based_prediction
 from mp_prediction_algorithms import genre_based_prediction, hybrid_based_prediction
