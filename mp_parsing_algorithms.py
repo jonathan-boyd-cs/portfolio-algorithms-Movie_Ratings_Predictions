@@ -43,7 +43,7 @@ def generate_dataset( file_handle : TextIOWrapper , parser : Callable[[str], any
         presently formatted in the default implementaton.<br>
         
         Returns:<br>
-        - <code>List</code>: list of user information
+        - <code>List</code>: list of information
     """
     #the function returns a database with a dictionary containing parsed data objects
     database =  ParseDatabase()
